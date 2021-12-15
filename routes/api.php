@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Models\Product;
+use App\Models\OrderBuy;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,29 +15,52 @@ use App\Models\Product;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::get('products', function (){
-   return Product::all();
-});
 
-Route::get('products/{id}', function ($id){
-    return Product::find($id);
-});
+Route::post('register', [\App\Http\Controllers\UserController::class, 'register']);
+Route::post('login', [\App\Http\Controllers\UserController::class, 'authenticate']);
 
-Route::post('products', function (Request $request) {
-    return  Product::create($request->all());
-});
+Route::get('products', [\App\Http\Controllers\ProductController::class, 'index']);
 
-Route::put('products/{id}', function (Request $request, $id){
-    $product = Product::findOrFail($id);
-    $product-> update($request->all());
+Route::get('products/{product}', [\App\Http\Controllers\ProductController::class, 'show']);
 
-    return $product;
-});
+Route::get('comments',[\App\Http\Controllers\CommentController::class, 'index']);
 
-Route::delete('products/{id}', function ($id){
-    Product::findOrFail($id)->delete();
-    return 204;
-});
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::get('categories', [\App\Http\Controllers\CategoryController::class, 'index']);
+
+
+Route::group(['middleware' => ['jwt.verify']], function() {
+
+    Route::get('user', [\App\Http\Controllers\UserController::class, 'getAuthenticatedUser']);
+
+    Route::post('products', [\App\Http\Controllers\ProductController::class, 'store']);
+
+    Route::put('products/{product}', [\App\Http\Controllers\ProductController::class, 'update']);
+
+    Route::delete('products/{product}', [\App\Http\Controllers\ProductController::class, 'delete']);
+
+    Route::get( 'orders', [\App\Http\Controllers\OrderController::class, 'index']);
+
+    Route::get( 'orders/{order}', [\App\Http\Controllers\OrderController::class, 'show']);
+
+    Route::get('details', [\App\Http\Controllers\DetailsController::class, 'index']);
+
+    Route::get('details/{details}', [\App\Http\Controllers\DetailsController::class, 'show']);
+
+    Route::get('categories/{category}', [\App\Http\Controllers\CategoryController::class, 'show']);
+
+    Route::post('categories', [\App\Http\Controllers\CategoryController::class, 'store']);
+
+    Route::put('categories/{category}', [\App\Http\Controllers\CategoryController::class, 'update']);
+
+    Route::delete('categories/{category}', [\App\Http\Controllers\CategoryController::class, 'delete']);
+
+    Route::get('comments/{comment}', [\App\Http\Controllers\CommentController::class, 'show']);
+
+    Route::post('comments', [\App\Http\Controllers\CommentController::class, 'store']);
+
+    Route::put('comments/{comment}', [\App\Http\Controllers\CommentController::class, 'update']);
+
+    Route::delete('comments/{comment}', [\App\Http\Controllers\CommentController::class, 'delete']);
+
+
 });
