@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Car;
 use App\Models\Product;
 use App\Models\WishList;
 use Illuminate\Database\Seeder;
@@ -24,6 +25,8 @@ class ProductsTableSeeder extends Seeder
 
         for ($i = 0; $i < 50; $i++) {
 
+
+
             foreach ($wishlists as $wishlist){
 
             Product::create([
@@ -34,11 +37,13 @@ class ProductsTableSeeder extends Seeder
                 'sale' => $faker->numberBetween(30,200),
 
                 'wish_id' => $wishlist->id,
+                'car_id' => $wishlist->id,
 
             ]);
+            }
 
             }
 
-        }
+
     }
 }

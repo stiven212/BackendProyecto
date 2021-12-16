@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddWishIdColumnProducts extends Migration
+class AddOrderIdColumnDetails extends Migration
 {
     /**
      * Run the migrations.
@@ -14,9 +14,10 @@ class AddWishIdColumnProducts extends Migration
     public function up()
     {
         //
-        Schema::table('products', function (Blueprint $table){
-           $table->unsignedBigInteger('wish_id');
-           $table->foreign('wish_id')->references('id')->on('wish_lists')->onDelete('restrict');
+
+        Schema::table('details_buys', function (Blueprint $table){
+            $table->unsignedBigInteger('order_id')->unsigned();
+            $table->foreign('order_id')->references('id')->on('order_buys')->onDelete('cascade');
         });
     }
 
@@ -28,9 +29,8 @@ class AddWishIdColumnProducts extends Migration
     public function down()
     {
         //
-
-        Schema::table('products', function (Blueprint $table){
-            $table->dropForeign(['wish_id']);
+        Schema::table('details_buys', function (Blueprint $table){
+            $table->dropForeign(['order_id']);
         });
     }
 }

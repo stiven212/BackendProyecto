@@ -14,7 +14,7 @@ class CreateDetailsBuysTable extends Migration
     public function up()
     {
         Schema::create('details_buys', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->text('details');
             $table->float('iva');
             $table->float('subtotal');
@@ -23,6 +23,8 @@ class CreateDetailsBuysTable extends Migration
             $table->text('products');
             $table->timestamps();
         });
+
+
     }
 
     /**

@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class DetailsBuy extends Model
 {
     use HasFactory;
+
+    public function order(){
+        return $this->belongsTo('App\Models\OrderBuy');
+    }
+
+    public function products(){
+        return $this->hasMany('App\Models\Products');
+    }
 }
