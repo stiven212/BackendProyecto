@@ -27,6 +27,11 @@ Route::get('comments',[\App\Http\Controllers\CommentController::class, 'index'])
 
 Route::get('categories', [\App\Http\Controllers\CategoryController::class, 'index']);
 
+Route::get('wish_list', function (){
+    return \App\Models\WishList::all();
+
+});
+
 
 Route::group(['middleware' => ['jwt.verify']], function() {
 

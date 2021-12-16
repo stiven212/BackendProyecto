@@ -3,7 +3,10 @@
 namespace Database\Seeders;
 
 use App\Models\Comment;
+use App\Models\User;
+use App\Models\WishList;
 use Illuminate\Database\Seeder;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class CommentsTableSeeder extends Seeder
 {
@@ -16,12 +19,27 @@ class CommentsTableSeeder extends Seeder
     {
         //
         Comment::truncate();
+
         $faker = \Faker\Factory::create();
-        // Crear artículos ficticios en la tabla
-        for ($i = 0; $i < 50; $i++) {
-            Comment::create([
-                'content' => $faker->sentence(6)
-            ]);
+
+        $users = User::all();
+
+
+        foreach ($users as $user) {
+            JWTAuth::attempt(['email' => $user->email, 'password' => '123123']);
+
+            for ($j=0; $j < 3; $j++){
+                Comment::create([
+                    'content' => $faker->sentence(6),
+
+                ]);
+            }
+
+
+
+
         }
     }
 }
+
+
