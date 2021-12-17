@@ -43,23 +43,23 @@ class CreateProductsTable extends Migration
 //                ->on('cars')
 //                ->onDelete('cascade');
 //        });
-
-        Schema::table('products', function (Blueprint $table){
-            $table
-                ->foreign('detail_id')
-                ->references('id')
-                ->on('details_buys')
-                ->onDelete('cascade');
-        });
-
-        Schema::table('products', function (Blueprint $table){
-           $table
-               ->foreign('category_id')
-               ->references('id')
-               ->on('categories')
-               ->onDelete('cascade');
-
-        });
+//
+//        Schema::table('products', function (Blueprint $table){
+//            $table
+//                ->foreign('detail_id')
+//                ->references('id')
+//                ->on('details_buys')
+//                ->onDelete('cascade');
+//        });
+//
+//        Schema::table('products', function (Blueprint $table){
+//           $table
+//               ->foreign('category_id')
+//               ->references('id')
+//               ->on('categories')
+//               ->onDelete('cascade');
+//
+//        });
 
 
     }
