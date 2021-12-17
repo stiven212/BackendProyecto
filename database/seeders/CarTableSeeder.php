@@ -18,7 +18,7 @@ class CarTableSeeder extends Seeder
     {
         //
 
-        Car::truncate();
+     //   Car::truncate();
 
         $faker = \Faker\Factory::create();
 

@@ -17,7 +17,7 @@ class OrdersTableSeeder extends Seeder
     public function run()
     {
         //
-        OrderBuy::truncate();
+       // OrderBuy::truncate();
         $faker = \Faker\Factory::create();
 
         $users = User::all();

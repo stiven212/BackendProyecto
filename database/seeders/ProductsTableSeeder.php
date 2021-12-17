@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Car;
+use App\Models\Category;
 use App\Models\Product;
 use App\Models\WishList;
 use Illuminate\Database\Seeder;
@@ -17,13 +18,17 @@ class ProductsTableSeeder extends Seeder
     public function run()
     {
         //
-        Product::truncate();
+//        Product::truncate();
         $faker = \Faker\Factory::create();
         // Crear artículos ficticios en la tabla
 
         $wishlists = WishList::all();
 
-        for ($i = 0; $i < 50; $i++) {
+        $categories = Category::all();
+
+        foreach ($categories as $category){
+
+        for ($i = 0; $i < 10; $i++) {
 
 
 
@@ -38,12 +43,16 @@ class ProductsTableSeeder extends Seeder
 
                 'wish_id' => $wishlist->id,
                 'car_id' => $wishlist->id,
+                'category_id' => $category->id,
+                'detail_id' => $wishlist->id,
+
 
             ]);
             }
 
             }
 
+        }
 
     }
 }

@@ -16,7 +16,7 @@ class DetailsTableSeeder extends Seeder
     public function run()
     {
         //
-        DetailsBuy::truncate();
+//        DetailsBuy::truncate();
         $faker = \Faker\Factory::create();
 
         $orders= OrderBuy::all();

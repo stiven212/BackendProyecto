@@ -17,7 +17,7 @@ class WishListTableSeeder extends Seeder
     public function run()
     {
         //
-        WishList::truncate();
+//        WishList::truncate();
 
         $faker = \Faker\Factory::create();
 

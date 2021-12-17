@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Comment;
+use App\Models\Product;
 use App\Models\User;
 use App\Models\WishList;
 use Illuminate\Database\Seeder;
@@ -24,13 +25,15 @@ class CommentsTableSeeder extends Seeder
 
         $users = User::all();
 
+        $products = Product::all();
 
         foreach ($users as $user) {
             JWTAuth::attempt(['email' => $user->email, 'password' => '123123']);
 
-            for ($j=0; $j < 3; $j++){
+            foreach ($products as $product){
                 Comment::create([
                     'content' => $faker->sentence(6),
+                    'product_id' => $product->id,
 
                 ]);
             }

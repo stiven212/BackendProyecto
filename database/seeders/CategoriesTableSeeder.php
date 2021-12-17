@@ -14,12 +14,12 @@ class CategoriesTableSeeder extends Seeder
      */
     public function run()
     {
-        Category::truncate();
+        //Category::truncate();
         $faker = \Faker\Factory::create();
         // Crear artículos ficticios en la tabla
         for ($i = 0; $i < 10; $i++) {
             Category::create([
-                'name' => "category ". $faker->numberBetween(1,6),
+                'name' => "category ". ($i+1),
                 'description' => $faker->sentence(20),
 
             ]);
