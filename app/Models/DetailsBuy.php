@@ -14,6 +14,6 @@ class DetailsBuy extends Model
     }
 
     public function products(){
-        return $this->hasMany('App\Models\Products');
+        return $this->belongsToMany('App\Models\Products')->withTimestamps();
     }
 }

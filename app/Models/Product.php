@@ -10,11 +10,11 @@ class Product extends Model
     protected $fillable = ['name', 'description', 'color', 'price' , 'sale'];
 
     public function car(){
-        return $this->belongsTo('App\Models\Car');
+        return $this->belongsToMany('App\Models\Car');
     }
 
     public function wishlist(){
-        return $this->belongsTo('App\Models\WishList');
+        return $this->belongsToMany('App\Models\WishList')->withTimestamps();
     }
 
     public function category(){
@@ -22,7 +22,7 @@ class Product extends Model
     }
 
     public function detail(){
-        return $this->belongsTo('App\Models\DetailsBuy');
+        return $this->belongsToMany('App\Models\DetailsBuy')->withTimestamps();
     }
 
     public function comments()

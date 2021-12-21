@@ -22,7 +22,6 @@ class ProductsTableSeeder extends Seeder
         $faker = \Faker\Factory::create();
         // Crear artículos ficticios en la tabla
 
-        $wishlists = WishList::all();
 
         $categories = Category::all();
 
@@ -32,7 +31,6 @@ class ProductsTableSeeder extends Seeder
 
 
 
-            foreach ($wishlists as $wishlist){
 
             Product::create([
                 'name' => 't-shirt size '.$faker->randomLetter,
@@ -41,10 +39,8 @@ class ProductsTableSeeder extends Seeder
                 'price' => $faker->numberBetween(10,100),
                 'sale' => $faker->numberBetween(30,200),
 
-                'wish_id' => $wishlist->id,
-                'car_id' => $wishlist->id,
+
                 'category_id' => $category->id,
-                'detail_id' => $wishlist->id,
 
 
             ]);
@@ -54,5 +50,5 @@ class ProductsTableSeeder extends Seeder
 
         }
 
-    }
+
 }

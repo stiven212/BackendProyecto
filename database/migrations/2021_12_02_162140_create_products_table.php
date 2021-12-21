@@ -20,9 +20,6 @@ class CreateProductsTable extends Migration
             $table->string('color');
             $table->double('price');
             $table->double('sale');
-            $table->unsignedBigInteger('wish_id')->unsigned();
-            $table->unsignedBigInteger('car_id')->unsigned();
-            $table->unsignedBigInteger('detail_id')->unsigned();
             $table->unsignedBigInteger('category_id')->unsigned();
 
             $table->timestamps();

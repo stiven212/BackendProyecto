@@ -32,12 +32,16 @@ Route::get('wish_list', function (){
 
 });
 
+Route::get('categories/{category}/products', [\App\Http\Controllers\ProductController::class, 'index']);
+
 
 Route::group(['middleware' => ['jwt.verify']], function() {
 
     Route::get('user', [\App\Http\Controllers\UserController::class, 'getAuthenticatedUser']);
 
     Route::post('products', [\App\Http\Controllers\ProductController::class, 'store']);
+
+    Route::post('categories/{category}/products', [\App\Http\Controllers\CategoryController::class, 'store']);
 
     Route::put('products/{product}', [\App\Http\Controllers\ProductController::class, 'update']);
 

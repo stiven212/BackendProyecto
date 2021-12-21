@@ -30,6 +30,7 @@ class OrdersTableSeeder extends Seeder
             for($j = 0; $j < $num_orders; $j++){
                 OrderBuy::create([
                     'address' => $faker->address,
+                    'status' => 'received'
                 ]);
             }
 

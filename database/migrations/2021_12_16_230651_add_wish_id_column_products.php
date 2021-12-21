@@ -14,12 +14,21 @@ class AddWishIdColumnProducts extends Migration
     public function up()
     {
         //
-        Schema::table('products', function (Blueprint $table){
+        Schema::create('products_wish', function (Blueprint $table){
+            $table->unsignedBigInteger('wish_id')->unsigned();
             $table
                 ->foreign('wish_id')
                 ->references('id')
                 ->on('wish_lists')
                 ->onDelete('cascade');
+            $table->unsignedBigInteger('product_id')->unsigned();
+            $table
+                ->foreign('product_id')
+                ->references('id')
+                ->on('products')
+                ->onDelete('cascade');
+            $table->timestamps();
+
         });
     }
 

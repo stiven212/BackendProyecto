@@ -14,13 +14,23 @@ class AddCarIdColumnProducts extends Migration
     public function up()
     {
         //
-        Schema::table('products', function (Blueprint $table){
+        Schema::create('products_cars', function (Blueprint $table){
+            $table->unsignedBigInteger('car_id')->unsigned();
             $table
                 ->foreign('car_id')
                 ->references('id')
                 ->on('cars')
                 ->onDelete('cascade');
+            $table->unsignedBigInteger('product_id')->unsigned();
+            $table
+                ->foreign('product_id')
+                ->references('id')
+                ->on('products')
+                ->onDelete('cascade');
+            $table->timestamps();
+
         });
+
     }
 
     /**
@@ -31,9 +41,10 @@ class AddCarIdColumnProducts extends Migration
     public function down()
     {
         //
+        Schema::disableForeignKeyConstraints();
+        Schema::dropIfExists('products_cars');
+        Schema::enableForeignKeyConstraints();
 
-        Schema::table('products', function (Blueprint $table){
-            $table->dropForeign(['car_id']);
-        });
+
     }
 }

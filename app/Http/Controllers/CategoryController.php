@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -18,9 +19,12 @@ class CategoryController extends Controller
         return $category;
     }
 
-    public function store (Request $request)
+    public function store (Request $request, Category $category)
     {
-        $category = Category::create($request->all());
+        $product = Product::create($request->all());
+
+        $category->products()->save($product);
+
         return  response()->json($category,201);
     }
 
