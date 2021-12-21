@@ -14,7 +14,7 @@ class AddCarIdColumnProducts extends Migration
     public function up()
     {
         //
-        Schema::create('products_cars', function (Blueprint $table){
+        Schema::create('car_product', function (Blueprint $table){
             $table->unsignedBigInteger('car_id')->unsigned();
             $table
                 ->foreign('car_id')

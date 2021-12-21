@@ -19,10 +19,10 @@ class DatabaseSeeder extends Seeder
         $this->call(UsersTableSeeder::class);
         $this->call(CategoriesTableSeeder::class);
         $this->call(OrdersTableSeeder::class);
+        $this->call(ProductsTableSeeder::class);
         $this->call(DetailsTableSeeder::class);
         $this->call(CarTableSeeder::class);
         $this->call(WishListTableSeeder::class);
-        $this->call(ProductsTableSeeder::class);
         $this->call(CommentsTableSeeder::class);
         Schema::enableForeignKeyConstraints();
 

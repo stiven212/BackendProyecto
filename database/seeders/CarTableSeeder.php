@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Car;
+use App\Models\Product;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -28,11 +29,21 @@ class CarTableSeeder extends Seeder
             JWTAuth::attempt(['email' => $user->email, 'password' => '123123']);
 
 
-               Car::create();
+               $car = Car::create();
 
+               $car->products()->saveMany(
+                   $faker->randomElements(
+                       array(
+                           Product::find(1),
+                           Product::find(2),
+                           Product::find(3)
 
-
+                       ),  $faker->numberBetween(1,3), false
+                   )
+               );
 
         }
+
+
     }
 }

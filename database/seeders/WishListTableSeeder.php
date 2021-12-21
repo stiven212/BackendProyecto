@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Product;
 use App\Models\User;
 use App\Models\WishList;
 use Illuminate\Database\Seeder;
@@ -27,8 +28,18 @@ class WishListTableSeeder extends Seeder
             JWTAuth::attempt(['email' => $user->email, 'password' => '123123']);
 
 
-            WishList::create();
+            $wish = WishList::create();
 
+            $wish->products()->saveMany(
+                $faker->randomElements(
+                    array(
+                        Product::find(1),
+                        Product::find(2),
+                        Product::find(3)
+
+                    ),  $faker->numberBetween(1,3), false
+                )
+            );
 
 
 

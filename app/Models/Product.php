@@ -10,7 +10,7 @@ class Product extends Model
     protected $fillable = ['name', 'description', 'color', 'price' , 'sale'];
 
     public function car(){
-        return $this->belongsToMany('App\Models\Car');
+        return $this->belongsToMany('App\Models\Car')->withTimestamps();
     }
 
     public function wishlist(){
