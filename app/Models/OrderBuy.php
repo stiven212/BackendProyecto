@@ -10,6 +10,7 @@ class OrderBuy extends Model
 {
     use HasFactory;
 
+    protected $fillable =['address', 'status'];
     public static function boot()
     {
         parent::boot();

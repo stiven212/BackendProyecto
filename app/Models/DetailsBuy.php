@@ -9,6 +9,8 @@ class DetailsBuy extends Model
 {
     use HasFactory;
 
+    protected $fillable= ['details', 'iva', 'subtotal', 'quantity'];
+
     public function order(){
         return $this->belongsTo('App\Models\OrderBuy');
     }

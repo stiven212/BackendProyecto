@@ -4,17 +4,19 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\OrderBuy;
+use App\Http\Resources\Order as OrderResource;
+use App\Http\Resources\OrderCollection;
 
 class OrderController extends Controller
 {
     //
     public function index()
     {
-        return OrderBuy::all();
+        return new OrderCollection( OrderBuy::paginate(10));
     }
-    public function show(OrderBuy $orderBuy)
+    public function show($id)
     {
-        return $orderBuy;
+        return response()->json(new OrderResource(OrderBuy::find($id)),200);
     }
     public function store (Request $request)
     {

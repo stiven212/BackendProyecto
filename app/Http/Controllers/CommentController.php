@@ -4,17 +4,19 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Comment;
+use App\Http\Resources\CommentCollection;
+use App\Http\Resources\Comment as CommentResource;
 
 class CommentController extends Controller
 {
     //
     public function index()
     {
-        return Comment::all();
+        return response()->json( new CommentCollection(Comment::all()),200) ;
     }
     public function show(Comment $comment)
     {
-        return $comment;
+        return response()->json(new CommentResource($comment),200) ;
     }
 
     public function store (Request $request)

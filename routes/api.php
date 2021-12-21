@@ -32,7 +32,10 @@ Route::get('wish_list', function (){
 
 });
 
-Route::get('categories/{category}/products', [\App\Http\Controllers\ProductController::class, 'index']);
+Route::get('categories/{category}', [\App\Http\Controllers\CategoryController::class, 'show']);
+
+Route::get('comments/{comment}', [\App\Http\Controllers\CommentController::class, 'show']);
+
 
 
 Route::group(['middleware' => ['jwt.verify']], function() {
@@ -49,13 +52,12 @@ Route::group(['middleware' => ['jwt.verify']], function() {
 
     Route::get( 'orders', [\App\Http\Controllers\OrderController::class, 'index']);
 
-    Route::get( 'orders/{order}', [\App\Http\Controllers\OrderController::class, 'show']);
+    Route::get( 'orders/{id}', [\App\Http\Controllers\OrderController::class, 'show']);
 
     Route::get('details', [\App\Http\Controllers\DetailsController::class, 'index']);
 
     Route::get('details/{details}', [\App\Http\Controllers\DetailsController::class, 'show']);
 
-    Route::get('categories/{category}', [\App\Http\Controllers\CategoryController::class, 'show']);
 
     Route::post('categories', [\App\Http\Controllers\CategoryController::class, 'store']);
 
@@ -63,7 +65,6 @@ Route::group(['middleware' => ['jwt.verify']], function() {
 
     Route::delete('categories/{category}', [\App\Http\Controllers\CategoryController::class, 'delete']);
 
-    Route::get('comments/{comment}', [\App\Http\Controllers\CommentController::class, 'show']);
 
     Route::post('comments', [\App\Http\Controllers\CommentController::class, 'store']);
 

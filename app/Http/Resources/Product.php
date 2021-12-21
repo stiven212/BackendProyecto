@@ -22,7 +22,7 @@ class Product extends JsonResource
             'price' => $this->price,
             'sale' => $this->sale,
             'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'updated_at' => $this-> updated_at,
             'category' => "/api/categories/". $this->category_id,
         ];    }
 }

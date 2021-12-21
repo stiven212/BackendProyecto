@@ -31,7 +31,6 @@ class DetailsTableSeeder extends Seeder
                 'iva' => $faker->randomFloat(3,0,1),
                 'total' => $faker->randomFloat(3,10,90),
                 'quantity' => $faker->numberBetween(1,7),
-                'products' => $faker->sentence(8,true),
                 'order_id' => $order->id,
 
             ]);
