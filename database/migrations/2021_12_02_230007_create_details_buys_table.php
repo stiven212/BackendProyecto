@@ -13,7 +13,7 @@ class CreateDetailsBuysTable extends Migration
      */
     public function up()
     {
-        Schema::create('details_buys', function (Blueprint $table) {
+        Schema::create('buy_details', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->text('details');
             $table->float('iva');
@@ -33,6 +33,6 @@ class CreateDetailsBuysTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('details_buys');
+        Schema::dropIfExists('buy_details');
     }
 }

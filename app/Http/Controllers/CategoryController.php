@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ProductCollection;
 use App\Models\Category;
 use App\Http\Resources\Category as CategoryResource;
 use App\Models\Product;
+use App\Http\Resources\Product as ProductResource;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class CategoryController extends Controller
 {
@@ -20,11 +23,24 @@ class CategoryController extends Controller
         return response()->json(new CategoryResource($category),200);
     }
 
-    public function store (Request $request, Category $category)
+    public function showProducts(Category $category)
     {
-        $product = Product::create($request->all());
+        return new ProductCollection($category->products);
 
-        $category->products()->save($product);
+    }
+
+    public function showProduct(Category $category, Product $product)
+    {
+        $product = $category->products()->where('id', $product->id)->firstOrFail();
+        return response()->json(new ProductResource($product),200);
+    }
+
+
+
+    public function store (Request $request)
+    {
+
+        $category= Category::create($request->all());
 
         return  response()->json($category,201);
     }

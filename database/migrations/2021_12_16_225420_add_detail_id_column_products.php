@@ -15,12 +15,12 @@ class AddDetailIdColumnProducts extends Migration
     {
         //
 
-        Schema::create('details_buy_product', function (Blueprint $table){
-            $table->unsignedBigInteger('details_buy_id')->unsigned();
+        Schema::create('buy_detail_product', function (Blueprint $table){
+            $table->unsignedBigInteger('buy_detail_id')->unsigned();
             $table
-                ->foreign('details_buy_id')
+                ->foreign('buy_detail_id')
                 ->references('id')
-                ->on('details_buys')
+                ->on('buy_details')
                 ->onDelete('cascade');
             $table->unsignedBigInteger('product_id')->unsigned();
             $table
@@ -44,7 +44,7 @@ class AddDetailIdColumnProducts extends Migration
     {
         //
         Schema::enableForeignKeyConstraints();
-        Schema::dropIfExists('products_details');
+        Schema::dropIfExists('details_buy_product');
         Schema::enableForeignKeyConstraints();
 
     }

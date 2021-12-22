@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\DetailsBuy;
+use App\Models\BuyDetail;
 use App\Models\OrderBuy;
 use App\Models\Product;
 use Illuminate\Database\Seeder;
@@ -17,7 +17,7 @@ class DetailsTableSeeder extends Seeder
     public function run()
     {
         //
-//        DetailsBuy::truncate();
+//        BuyDetail::truncate();
         $faker = \Faker\Factory::create();
 
         $orders= OrderBuy::all();
@@ -26,13 +26,13 @@ class DetailsTableSeeder extends Seeder
 
             foreach ($orders as $order){
 
-            $detail = DetailsBuy::create([
+            $detail = BuyDetail::create([
                 'details' => $faker->sentence(7),
                 'subtotal' => $faker->randomFloat(3,0,8),
                 'iva' => $faker->randomFloat(3,0,1),
                 'total' => $faker->randomFloat(3,10,90),
                 'quantity' => $faker->numberBetween(1,7),
-                'order_id' => $order->id,
+                'order_buy_id' => $order->id,
 
             ]);
 

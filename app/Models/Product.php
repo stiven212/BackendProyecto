@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-    protected $fillable = ['name', 'description', 'color', 'price' , 'sale'];
+    protected $fillable = ['name', 'description', 'color', 'price' , 'sale', 'category_id'];
 
     public function car(){
         return $this->belongsToMany('App\Models\Car')->withTimestamps();
@@ -22,7 +22,7 @@ class Product extends Model
     }
 
     public function detail(){
-        return $this->belongsToMany('App\Models\DetailsBuy')->withTimestamps();
+        return $this->belongsToMany('App\Models\BuyDetail')->withTimestamps();
     }
 
     public function comments()

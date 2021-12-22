@@ -2,34 +2,41 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\OrderBuy;
 use Illuminate\Http\Request;
-use App\Models\DetailsBuy;
+use App\Models\BuyDetail;
 use App\Http\Resources\Detail as DetailResource;
+use App\Http\Resources\DetailCollection;
 
 
 class DetailsController extends Controller
 {
     //
-    public function index()
+    public function index(OrderBuy $orderBuy)
     {
-        return DetailsBuy::all();
+        return response()->json(new DetailCollection($orderBuy->details));
+
     }
     public function show($id)
     {
-        return response()->json(new DetailResource(DetailsBuy::find($id)),200);
+        return response()->json(new DetailResource(BuyDetail::find($id)),200);
     }
+//    public function show(BuyDetail $detailsBuy)
+//    {
+//        return response()->json(new DetailResource($detailsBuy),200);
+//    }
     public function store (Request $request)
     {
-        $detailBuy = DetailsBuy::create($request->all());
+        $detailBuy = BuyDetail::create($request->all());
         return  response()->json($detailBuy,201);
     }
-    public function update(Request $request, DetailsBuy $detailsBuy)
+    public function update(Request $request, BuyDetail $detailsBuy)
     {
         $detailsBuy->update($request->all());
         return response()->json($detailsBuy,200);
     }
 
-    public function delete(DetailsBuy $detailsBuy)
+    public function delete(BuyDetail $detailsBuy)
     {
         $detailsBuy->delete();
         return response()->json(null,204);

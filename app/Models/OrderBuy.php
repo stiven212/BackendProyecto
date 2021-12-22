@@ -23,6 +23,6 @@ class OrderBuy extends Model
     }
 
     public function details(){
-        return $this->hasMany('App\Models\DetailsBuy');
+        return $this->hasMany('App\Models\BuyDetail');
     }
 }

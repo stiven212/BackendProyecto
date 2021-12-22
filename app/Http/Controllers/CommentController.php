@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Models\Comment;
 use App\Http\Resources\CommentCollection;
@@ -14,9 +15,9 @@ class CommentController extends Controller
     {
         return response()->json( new CommentCollection(Comment::all()),200) ;
     }
-    public function show(Comment $comment)
+    public function show(Product $product)
     {
-        return response()->json(new CommentResource($comment),200) ;
+        return response()->json(new CommentCollection($product->comments),200);
     }
 
     public function store (Request $request)

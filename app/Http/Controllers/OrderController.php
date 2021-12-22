@@ -14,9 +14,9 @@ class OrderController extends Controller
     {
         return new OrderCollection( OrderBuy::paginate(10));
     }
-    public function show($id)
+    public function show(OrderBuy $orderBuy)
     {
-        return response()->json(new OrderResource(OrderBuy::find($id)),200);
+        return response()->json(new OrderResource($orderBuy),200);
     }
     public function store (Request $request)
     {

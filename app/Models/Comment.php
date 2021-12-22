@@ -23,6 +23,6 @@ class Comment extends Model
     }
 
     public function product(){
-        return $this->belongsTo('App\Models\Category');
+        return $this->belongsTo('App\Models\Product');
     }
 }

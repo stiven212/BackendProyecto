@@ -15,9 +15,9 @@ class AddOrderIdColumnDetails extends Migration
     {
         //
 
-        Schema::table('details_buys', function (Blueprint $table){
-            $table->unsignedBigInteger('order_id')->unsigned();
-            $table->foreign('order_id')->references('id')->on('order_buys')->onDelete('cascade');
+        Schema::table('buy_details', function (Blueprint $table){
+            $table->unsignedBigInteger('order_buy_id')->unsigned();
+            $table->foreign('order_buy_id')->references('id')->on('order_buys')->onDelete('cascade');
         });
     }
 
@@ -29,7 +29,7 @@ class AddOrderIdColumnDetails extends Migration
     public function down()
     {
         //
-        Schema::table('details_buys', function (Blueprint $table){
+        Schema::table('buy_details', function (Blueprint $table){
             $table->dropForeign(['order_id']);
         });
     }
