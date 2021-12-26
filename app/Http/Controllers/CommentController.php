@@ -20,6 +20,8 @@ class CommentController extends Controller
         return response()->json(new CommentCollection($product->comments),200);
     }
 
+
+
     public function store (Request $request)
     {
         $comment = Comment::create($request->all());

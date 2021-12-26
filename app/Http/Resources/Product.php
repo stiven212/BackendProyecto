@@ -24,5 +24,7 @@ class Product extends JsonResource
             'created_at' => $this->created_at,
             'updated_at' => $this-> updated_at,
             'category' => "/api/categories/". $this->category_id,
+            'product' => "/api/categories/". $this->category_id .'/products/'. $this->id,
+
         ];    }
 }

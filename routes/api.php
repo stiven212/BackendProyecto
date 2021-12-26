@@ -25,13 +25,15 @@ Route::get('products/{product}', [\App\Http\Controllers\ProductController::class
 
 
 
+// Comments
+
 Route::get('comments',[\App\Http\Controllers\CommentController::class, 'index']);
 
+Route::get('products/{product}/comments', [\App\Http\Controllers\CommentController::class, 'showComments']);
 
-Route::get('wish_list', function (){
-    return \App\Models\WishList::all();
+Route::get('products/{product}/comments', [\App\Http\Controllers\CommentController::class, 'show']);
 
-});
+
 
 // categories
 
@@ -43,18 +45,7 @@ Route::get('categories/{category}/products', [\App\Http\Controllers\CategoryCont
 
 Route::get('categories/{category}/products/{product}', [\App\Http\Controllers\CategoryController::class, 'showProduct']);
 
-Route::get('cars/{car}/products', [\App\Http\Controllers\ProductController::class, 'showByCar']);
 
-Route::post('cars/{car}/products/{id}', [\App\Http\Controllers\ProductController::class, 'storeByCar']);
-
-Route::delete('cars/{car}/products/{product}', [\App\Http\Controllers\ProductController::class, 'deleteByCar']);
-
-
-
-Route::get('wishes/{wishList}/products', [\App\Http\Controllers\ProductController::class, 'showByWish']);
-
-
-Route::get('products/{product}/comments', [\App\Http\Controllers\CommentController::class, 'show']);
 
 
 
@@ -63,6 +54,12 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     // User
 
     Route::get('user', [\App\Http\Controllers\UserController::class, 'getAuthenticatedUser']);
+    Route::post('/logout', [\App\Http\Controllers\UserController::class,'logout']);
+    Route::post('/car',[\App\Http\Controllers\UserController::class, 'createCar']);
+    Route::get('cars', [\App\Http\Controllers\UserController::class, 'showCar']);
+    Route::post('wish', [\App\Http\Controllers\UserController::class, 'createWish']);
+    Route::get('wishes', [\App\Http\Controllers\UserController::class, 'showWish']);
+    Route::get('order',[\App\Http\Controllers\UserController::class, 'showOrders']);
 
     // Products
 
@@ -82,22 +79,48 @@ Route::group(['middleware' => ['jwt.verify']], function() {
 
     Route::delete('categories/{category}', [\App\Http\Controllers\CategoryController::class, 'delete']);
 
+    // Orders
 
     Route::get( 'orders', [\App\Http\Controllers\OrderController::class, 'index']);
 
     Route::get( 'orders/{orderBuy}', [\App\Http\Controllers\OrderController::class, 'show']);
 
+    Route::post('orders', [\App\Http\Controllers\OrderController::class, 'store']);
+
+    Route::get('orders/{orderBuy}/details/{buyDetail}', [\App\Http\Controllers\OrderController::class, 'showDetail']);
+    // Details
+
+
+    Route::post('details',[\App\Http\Controllers\DetailsController::class, 'store']);
+
+    Route::get('details/{buyDetail}', [\App\Http\Controllers\DetailsController::class, 'show']);
+
     Route::get('orders/{orderBuy}/details', [\App\Http\Controllers\DetailsController::class, 'index']);
 
-    Route::get('details/{detail}', [\App\Http\Controllers\DetailsController::class, 'show']);
+    Route::post('details/{buyDetail}/cars/{car}', [\App\Http\Controllers\ProductController::class, 'storeByDetail']);
 
 
-    Route::post('categories', [\App\Http\Controllers\CategoryController::class, 'store']);
 
-    Route::put('categories/{category}', [\App\Http\Controllers\CategoryController::class, 'update']);
 
-    Route::delete('categories/{category}', [\App\Http\Controllers\CategoryController::class, 'delete']);
 
+
+    //Carrito
+    Route::get('cars/{car}/products', [\App\Http\Controllers\ProductController::class, 'showByCar']);
+    Route::post('cars/{car}/products/{id}', [\App\Http\Controllers\ProductController::class, 'storeByCar']);
+    Route::delete('cars/{car}/products/{id}',[\App\Http\Controllers\ProductController::class, 'deleteByCar']);
+    Route::delete('cars/{car}/products', [\App\Http\Controllers\ProductController::class, 'clearCar']);
+
+    // Lista de deseos
+
+    Route::get('wishes/{wishList}/products', [\App\Http\Controllers\ProductController::class, 'showByWish']);
+
+    Route::post('wishes/{wishList}/products/{id}', [\App\Http\Controllers\ProductController::class, 'storeByWish']);
+
+    Route::delete('wishes/{wishList}/products/{id}', [\App\Http\Controllers\ProductController::class, 'deleteByWish']);
+
+
+
+    // Comments
 
     Route::post('comments', [\App\Http\Controllers\CommentController::class, 'store']);
 

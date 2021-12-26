@@ -9,7 +9,7 @@ class BuyDetail extends Model
 {
     use HasFactory;
 
-    protected $fillable= ['details', 'iva', 'subtotal', 'quantity'];
+    protected $fillable= ['details', 'iva', 'subtotal', 'quantity', 'received', 'order_buy_id', 'total'];
 
     public function order(){
         return $this->belongsTo('App\Models\OrderBuy');

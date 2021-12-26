@@ -17,9 +17,9 @@ class DetailsController extends Controller
         return response()->json(new DetailCollection($orderBuy->details));
 
     }
-    public function show($id)
+    public function show(BuyDetail $buyDetail)
     {
-        return response()->json(new DetailResource(BuyDetail::find($id)),200);
+        return response()->json(new DetailResource($buyDetail),200);
     }
 //    public function show(BuyDetail $detailsBuy)
 //    {

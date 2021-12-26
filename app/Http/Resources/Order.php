@@ -23,7 +23,6 @@ class Order extends JsonResource
             'user_id' => $this->user_id,
             'details' => $this->details
 
-
         ];
     }
 }

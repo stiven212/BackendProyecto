@@ -20,6 +20,7 @@ class CreateDetailsBuysTable extends Migration
             $table->float('subtotal');
             $table->float('total');
             $table->integer('quantity');
+            $table->boolean('received');
             $table->timestamps();
         });
 

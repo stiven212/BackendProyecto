@@ -33,6 +33,8 @@ class DetailsTableSeeder extends Seeder
                 'total' => $faker->randomFloat(3,10,90),
                 'quantity' => $faker->numberBetween(1,7),
                 'order_buy_id' => $order->id,
+                'received' => false
+
 
             ]);
 

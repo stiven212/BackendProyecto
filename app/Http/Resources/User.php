@@ -12,6 +12,14 @@ class User extends JsonResource
      * @param  \Illuminate\Http\Request  $request
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
+
+    protected $token;
+
+    public function __construct($resource, $token = null)
+    {
+        parent::__construct($resource);
+        $this->token = $token;
+    }
     public function toArray($request)
     {
         return [
@@ -20,6 +28,8 @@ class User extends JsonResource
             'email' => $this->email,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+            'token'=>$this->when($this->token,$this->token),
+
         ];
     }
 }

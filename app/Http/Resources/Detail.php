@@ -23,7 +23,7 @@ class Detail extends JsonResource
             'quantity' => $this->quantity,
             'created_at' => $this->created_at,
             'updated_at' => $this-> updated_at,
-            'order_id' => $this->order_id,
+            'order_buy_id' => $this->order_buy_id,
             'product' => $this->products
 
         ];
