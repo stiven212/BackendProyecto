@@ -60,6 +60,7 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('wish', [\App\Http\Controllers\UserController::class, 'createWish']);
     Route::get('wishes', [\App\Http\Controllers\UserController::class, 'showWish']);
     Route::get('order',[\App\Http\Controllers\UserController::class, 'showOrders']);
+    Route::put('user', [\App\Http\Controllers\UserController::class, 'update']);
 
     // Products
 
