@@ -64,11 +64,14 @@ Route::group(['middleware' => ['jwt.verify']], function() {
 
     // Products
 
+    Route::get('products/{product}/image', [\App\Http\Controllers\ProductController::class, 'image']);
+
     Route::post('products', [\App\Http\Controllers\ProductController::class, 'store']);
 
     Route::put('products/{product}', [\App\Http\Controllers\ProductController::class, 'update']);
 
     Route::delete('products/{product}', [\App\Http\Controllers\ProductController::class, 'delete']);
+
 
     // Categories
 

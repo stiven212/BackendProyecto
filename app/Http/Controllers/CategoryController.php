@@ -25,7 +25,8 @@ class CategoryController extends Controller
 
     public function showProducts(Category $category)
     {
-        return new ProductCollection($category->products);
+
+        return response()->json(new ProductCollection($category->products), 200);
 
     }
 
@@ -40,6 +41,13 @@ class CategoryController extends Controller
     public function store (Request $request)
     {
 
+        $request->validate([
+            'name' => 'required|string|unique:categories',
+            'description' => 'required'
+        ], [
+            'unique' => 'El :attribute ya existe',
+        ]);
+
         $category= Category::create($request->all());
 
         return  response()->json($category,201);
@@ -47,6 +55,14 @@ class CategoryController extends Controller
 
     public function update(Request $request, Category $category)
     {
+
+        $request->validate([
+            'name' => 'required|string|unique:categories,name,'.$category->id.'|max:255',
+            'description' => 'required',
+        ], [
+            'unique' => 'El :attribute ya existe',
+        ]);
+
         $category->update($request->all());
 
         return response()->json($category,200);

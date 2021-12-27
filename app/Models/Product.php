@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-    protected $fillable = ['name', 'description', 'color', 'price' , 'sale', 'category_id'];
+    protected $fillable = ['name', 'description', 'color', 'price' , 'sale', 'category_id', 'image1', 'image2','image3','image4','image5'];
 
     public function car(){
         return $this->belongsToMany('App\Models\Car')->withTimestamps();

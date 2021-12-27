@@ -14,6 +14,7 @@ class DetailsController extends Controller
     //
     public function index(OrderBuy $orderBuy)
     {
+        $this->authorize('viewAny', $orderBuy);
         return response()->json(new DetailCollection($orderBuy->details));
 
     }

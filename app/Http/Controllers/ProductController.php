@@ -12,10 +12,26 @@ use App\Http\Resources\ProductCollection;
 use App\Models\Product;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
 {
     //
+
+//    private static $rules =[
+//        'name' => 'required|string|max:255',
+//        'description' => 'required',
+//        'color' => 'required',
+//        'price' => 'required',
+//        'sale' => 'required',
+//        'category_id' => 'required|exists:categories,id'
+//    ];
+    private static $messages = [
+        'category_id.exists' => 'Categoria no existente',
+        'required' =>  'El campo :attribute es obligatorio',
+        'color.required' => 'El color no es valido'
+    ];
     public function index()
     {
         return Product::all();
@@ -25,23 +41,64 @@ class ProductController extends Controller
         return $product;
     }
 
+    public function image(Product $product){
+        return response()->download(public_path(Storage::url($product->image3)),$product->name);
+    }
     public function showByCar(Car $car){
+        $this->authorize('showByCar', $car);
 
         return new ProductCollection($car->products);
     }
 
     public function showByWish(WishList $wishList){
 
+        $this->authorize('showByWish',$wishList);
+
         return new ProductCollection($wishList->products);
     }
     public function store (Request $request)
     {
-        $product = Product::create($request->all());
-        return  response()->json($product,201);
+
+        $validatedData= $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'required',
+            'color' => 'required',
+            'price' => 'required',
+            'sale' => 'required',
+            'category_id' => 'required|exists:categories,id',
+            'image1' => 'required|image|dimensions:min_width=200,min_height=200',
+            'image2' => 'required|image|dimensions:min_width=200,min_height=200',
+            'image3' => 'required|image|dimensions:min_width=200,min_height=200',
+            'image4' => 'required|image|dimensions:min_width=200,min_height=200',
+            'image5' => 'required|image|dimensions:min_width=200,min_height=200',
+
+        ],self::$messages);
+//
+
+//        $product = Product::create($request->all());
+
+        $product = new Product($request->all());
+
+        $path1 = $request->image1->store('public/products');
+        $path2 = $request->image2->store('public/products');
+        $path3 = $request->image3->store('public/products');
+        $path4 = $request->image4->store('public/products');
+        $path5 = $request->image5->store('public/products');
+
+        $product->image1 = $path1;
+        $product->image2 = $path2;
+        $product->image3 = $path3;
+        $product->image4 = $path4;
+        $product->image5 = $path5;
+
+        $product->save();
+
+
+        return  response()->json(new ProductResource($product),201);
     }
     public function storeByCar (Car $car, $id)
     {
-     //   $this->authorize('storeByCar', $car);
+        $this->authorize('storeByCar', $car);
         if(!$car->products()->where('product_id',$id)->exists()){
             $car->products()->save(Product::find($id));
             return response()->json(new ProductResource(Product::find($id)),200);
@@ -51,6 +108,8 @@ class ProductController extends Controller
 
     public function storeByWish(WishList $wishList, $id)
     {
+        $this->authorize('storeByWish',$wishList);
+
         if(!$wishList->products()->where('product_id', $id)->exists()){
             $wishList->products()->save(Product::find($id));
             return response()->json(new ProductResource(Product::find($id)),200);
@@ -61,6 +120,9 @@ class ProductController extends Controller
 
 
     public function deleteByCar(Car $car, $id){
+
+        $this->authorize('deleteByCar',$car);
+
         if($car->products()->where('product_id', $id)->exists()){
             $car->products()->detach($id);
             return response()->json(new ProductResource(Product::find($id)),200);
@@ -72,7 +134,7 @@ class ProductController extends Controller
     public function deleteByWish(WishList $wishList, $id)
     {
 
-      //  $this->authorize('deleteByWish' , $wishList);
+        $this->authorize('deleteByWish' , $wishList);
 
 //        $products = Product::all();
 //
@@ -90,6 +152,8 @@ class ProductController extends Controller
     }
 
     public function clearCar(Car $car){
+
+        $this->authorize('clearCar', $car);
         if($car->products()->exists()){
             $car->products()->detach();
             return response()->json('Productos eliminados del carrito',200);
@@ -128,6 +192,15 @@ class ProductController extends Controller
     }
     public function update(Request $request, Product $product)
     {
+        $request->validate([
+//            'name' => 'required|string|unique:products,name,'.$product->id.'|max:255',
+//            'description' => 'required',
+//            'color' => 'required',
+//            'price' => 'required',
+//            'sale' => 'required',
+            'category_id' => 'required|exists:categories,id'
+        ], self::$messages);
+
         $product->update($request->all());
         return response()->json($product,200);
 

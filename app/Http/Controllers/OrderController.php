@@ -18,16 +18,20 @@ class OrderController extends Controller
     }
     public function show(OrderBuy $orderBuy)
     {
+        $this->authorize('view',$orderBuy);
+
         return response()->json(new OrderResource($orderBuy),200);
     }
 
     public function store (Request $request)
     {
+
         $orderBuy = OrderBuy::create($request->all());
         return  response()->json($orderBuy,201);
     }
     public function showDetail(OrderBuy $orderBuy, BuyDetail $buyDetail)
     {
+        $this->authorize('showDetail', $orderBuy);
         $buyDetail = $orderBuy->details()->where('id', $buyDetail->id)->firstOrFail();
 
         return response()->json(new DetailResource($buyDetail),200);
@@ -35,6 +39,8 @@ class OrderController extends Controller
 
     public function update(Request $request, OrderBuy $orderBuy)
     {
+
+        $this->authorize('update', $orderBuy);
         $orderBuy->update($request->all());
         return response()->json($orderBuy,200);
     }
