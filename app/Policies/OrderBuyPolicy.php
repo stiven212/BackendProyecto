@@ -10,6 +10,13 @@ class OrderBuyPolicy
 {
     use HandlesAuthorization;
 
+    public function before(User $user, $ability)
+    {
+        if ($user->isGranted(User::ROLE_SUPERADMIN)) {
+            return true;
+        }
+    }
+
     /**
      * Determine whether the user can view any models.
      *
@@ -19,7 +26,7 @@ class OrderBuyPolicy
     public function viewAny(User $user, OrderBuy $orderBuy)
     {
         //
-        return  $user->id === $orderBuy->user_id;
+        return $user->isGranted(User::ROLE_USER) &&  $user->id === $orderBuy->user_id;
 
     }
 
@@ -33,7 +40,7 @@ class OrderBuyPolicy
     public function view(User $user, OrderBuy $orderBuy)
     {
         //
-        return  $user->id === $orderBuy->user_id;
+        return $user->isGranted(User::ROLE_USER) &&  $user->id === $orderBuy->user_id;
     }
 
 //    public function show(User $user, OrderBuy $orderBuy)
@@ -51,7 +58,7 @@ class OrderBuyPolicy
     public function showDetail(User $user, OrderBuy $orderBuy)
     {
         //
-        return  $user->id === $orderBuy->user_id;
+        return $user->isGranted(User::ROLE_USER) && $user->id === $orderBuy->user_id;
 
     }
 
@@ -65,7 +72,7 @@ class OrderBuyPolicy
     public function update(User $user, OrderBuy $orderBuy)
     {
         //
-        return  $user->id === $orderBuy->user_id;
+        return $user->isGranted(User::ROLE_USER) && $user->id === $orderBuy->user_id;
 
     }
 

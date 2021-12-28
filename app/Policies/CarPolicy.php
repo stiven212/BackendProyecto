@@ -10,6 +10,14 @@ class CarPolicy
 {
     use HandlesAuthorization;
 
+
+    public function before(User $user, $ability)
+    {
+        if ($user->isGranted(User::ROLE_SUPERADMIN)) {
+            return true;
+        }
+    }
+
     /**
      * Determine whether the user can view any models.
      *
@@ -19,6 +27,7 @@ class CarPolicy
     public function viewAny(User $user)
     {
         //
+        return $user->isGranted(User::ROLE_USER);
     }
 
     /**
@@ -30,7 +39,8 @@ class CarPolicy
      */
     public function view(User $user, Car $car)
     {
-        //
+        //return $user->isGranted(User::ROLE_ADMIN);
+
     }
 
     /**
@@ -54,7 +64,8 @@ class CarPolicy
     public function update(User $user, Car $car)
     {
         //
-        return $user->id === $car->user_id;
+
+        return $user->isGranted(User::ROLE_USER) &&  $user->id === $car->user_id;
     }
 
     /**
@@ -94,22 +105,22 @@ class CarPolicy
     }
 
     public function showByCar(User $user, Car $car){
-        return $user->id === $car->user_id;
+        return $user->isGranted(User::ROLE_USER) &&  $user->id === $car->user_id;
 
     }
 
     public function storeByCar(User $user, Car $car){
-        return $user->id === $car->user_id;
+        return $user->isGranted(User::ROLE_USER) &&  $user->id === $car->user_id;
 
     }
 
     public function deleteByCar(User $user, Car $car){
-        return $user->id === $car->user_id;
+        return $user->isGranted(User::ROLE_USER) &&  $user->id === $car->user_id;
 
     }
 
     public function clearCar(User $user, Car $car){
-        return $user->id === $car->user_id;
+        return $user->isGranted(User::ROLE_USER) &&  $user->id === $car->user_id;
 
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -23,7 +24,20 @@ class User extends Authenticatable implements JWTSubject
         'email',
         'password',
     ];
+    const ROLE_SUPERADMIN = 'ROLE_SUPERADMIN';
+    const ROLE_ADMIN = 'ROLE_ADMIN';
+    const ROLE_USER = 'ROLE_USER';
 
+//    private const ROLES_HIERARCHY = [
+//        self::ROLE_SUPERADMIN => [self::ROLE_ADMIN, self::ROLE_USER],
+//        self::ROLE_ADMIN => [self::ROLE_USER],
+//        self::ROLE_USER => []
+//    ];
+    private const ROLES_HIERARCHY = [
+        self::ROLE_SUPERADMIN => [self::ROLE_ADMIN],
+        self::ROLE_ADMIN => [self::ROLE_USER],
+        self::ROLE_USER => []
+    ];
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -71,5 +85,27 @@ class User extends Authenticatable implements JWTSubject
     public function comments()
     {
         return $this->hasMany('App\Models\Comment');
+    }
+
+    public function isGranted($role)
+    {
+        if ($role === $this->role) {
+            return true;
+        }
+        return self::isRoleInHierarchy($role, self::ROLES_HIERARCHY[$this->role]);
+    }
+
+    private static function isRoleInHierarchy($role, $role_hierarchy)
+    {
+        if (in_array($role, $role_hierarchy)) {
+            return true;
+        }
+        foreach ($role_hierarchy as $role_included) {
+            if(self::isRoleInHierarchy($role,self::ROLES_HIERARCHY[$role_included]))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }

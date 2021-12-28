@@ -10,6 +10,12 @@ class WishListPolicy
 {
     use HandlesAuthorization;
 
+    public function before(User $user, $ability)
+    {
+        if ($user->isGranted(User::ROLE_SUPERADMIN)) {
+            return true;
+        }
+    }
     /**
      * Determine whether the user can view any models.
      *
@@ -93,14 +99,14 @@ class WishListPolicy
     }
 
     public function showByWish(User $user, WishList $wishList){
-        return $user->id === $wishList->user_id;
+        return $user->isGranted(User::ROLE_USER) && $user->id === $wishList->user_id;
     }
 
     public function storeByWish(User $user, WishList $wishList){
-        return $user->id === $wishList->user_id;
+        return $user->isGranted(User::ROLE_USER) && $user->id === $wishList->user_id;
     }
 
     public function deleteByWish(User $user, WishList $wishList){
-        return $user->id === $wishList->user_id;
+        return $user->isGranted(User::ROLE_USER) && $user->id === $wishList->user_id;
     }
 }

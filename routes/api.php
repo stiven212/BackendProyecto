@@ -92,10 +92,13 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('orders', [\App\Http\Controllers\OrderController::class, 'store']);
 
     Route::get('orders/{orderBuy}/details/{buyDetail}', [\App\Http\Controllers\OrderController::class, 'showDetail']);
+
+
+
     // Details
 
 
-    Route::post('details',[\App\Http\Controllers\DetailsController::class, 'store']);
+    Route::post('orders/{orderBuy}/details',[\App\Http\Controllers\DetailsController::class, 'store']);
 
     Route::get('details/{buyDetail}', [\App\Http\Controllers\DetailsController::class, 'show']);
 
