@@ -1,9 +1,13 @@
 <?php
 
+use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Route;
 use App\Models\Product;
 use App\Models\OrderBuy;
+use Illuminate\Support\Str;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,6 +22,15 @@ use App\Models\OrderBuy;
 
 Route::post('register', [\App\Http\Controllers\UserController::class, 'register']);
 Route::post('login', [\App\Http\Controllers\UserController::class, 'authenticate']);
+
+//Password Resetting
+Route::post('/forgot-password', [\App\Http\Controllers\UserController::class, 'forgot'])->middleware('guest')->name('password.email');
+
+Route::get('/reset-password/{token}', [\App\Http\Controllers\UserController::class, 'getToken'])->middleware('guest')->name('password.reset');
+
+Route::post('/reset-password', [\App\Http\Controllers\UserController::class, 'resetPassword'])->middleware('guest')->name('password.update');
+
+//Products
 
 Route::get('products', [\App\Http\Controllers\ProductController::class, 'index']);
 
@@ -61,6 +74,12 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::get('wishes', [\App\Http\Controllers\UserController::class, 'showWish']);
     Route::get('order',[\App\Http\Controllers\UserController::class, 'showOrders']);
     Route::put('user', [\App\Http\Controllers\UserController::class, 'update']);
+    Route::get('/forgot-password', function (){
+        return view('auth.forgot-password');
+    })->middleware('guest')->name('password.request');
+
+
+
 
     // Products
 

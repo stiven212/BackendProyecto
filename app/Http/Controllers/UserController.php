@@ -6,11 +6,14 @@ use App\Models\OrderBuy;
 use App\Models\Product;
 use App\Models\User;
 use App\Models\WishList;
+use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 use JWTAuth;
 use App\Http\Resources\User as UserResource;
 use Tymon\JWTAuth\Exceptions\JWTException;
@@ -192,5 +195,47 @@ class UserController extends Controller
             // something went wrong whilst attempting to encode the token
             return response()->json(["message" => "No se pudo cerrar la sesión."], 500);
         }
+    }
+
+    public function forgot(Request $request){
+        $request->validate(['email' => 'required|email']);
+
+        $status = \Illuminate\Support\Facades\Password::sendResetLink(
+            $request->only('email')
+        );
+
+        return $status === \Illuminate\Support\Facades\Password::RESET_LINK_SENT
+            ? back()->with(['status' => __($status)])
+            : back()->withErrors(['email'=> __($status)]);
+    }
+
+    public function getToken($token){
+        return view('auth.password.reset-password', ['token' => $token]);
+
+    }
+
+    public function resetPassword(Request $request){
+        $request->validate([
+            'token' => 'required',
+            'email' => 'required|email',
+            'password' => 'required|min:6|confirmed',
+        ]);
+
+        $status = Password::reset(
+            $request->only('email', 'password', 'password_confirmation', 'token'),
+            function ($user, $password) {
+                $user->forceFill([
+                    'password' => Hash::make($password)
+                ])->setRememberToken(Str::random(60));
+
+                $user->save();
+
+                event(new PasswordReset($user));
+            }
+        );
+        //json('Restablecimiento correcto de la contraseña') //
+        return $status === Password::PASSWORD_RESET
+            ? response()-> view('auth.password.successfully')//redirect()->route('welcome')->with('status', __($status))
+            : back()->withErrors(['email' => [__($status)]]);
     }
 }

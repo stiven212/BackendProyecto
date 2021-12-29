@@ -12,6 +12,7 @@ use App\Http\Resources\ProductCollection;
 use App\Models\Product;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
@@ -34,7 +35,9 @@ class ProductController extends Controller
     ];
     public function index()
     {
-        return Product::all();
+
+        $products = DB::table('products')->orderBy('id','desc')->get();
+        return $products;
     }
     public function show(Product $product)
     {
