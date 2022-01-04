@@ -25,7 +25,7 @@ class CommentController extends Controller
     public function store (Request $request)
     {
         $comment = Comment::create($request->all());
-        return  response()->json($comment, 201);
+        return  response()->json($comment, 204);
     }
 
     public function update(Request $request, Comment $comment)

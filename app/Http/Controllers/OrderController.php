@@ -14,7 +14,7 @@ class OrderController extends Controller
     //
     public function index()
     {
-        return OrderBuy::all();
+        return response()->json(new OrderCollection(OrderBuy::all()),200);
     }
     public function show(OrderBuy $orderBuy)
     {

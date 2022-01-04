@@ -85,7 +85,7 @@ Route::group(['middleware' => ['jwt.verify']], function() {
 
     Route::get('products/{product}/image', [\App\Http\Controllers\ProductController::class, 'image']);
 
-    Route::post('products', [\App\Http\Controllers\ProductController::class, 'store']);
+    Route::post('/products', [\App\Http\Controllers\ProductController::class, 'store']);
 
     Route::put('products/{product}', [\App\Http\Controllers\ProductController::class, 'update']);
 

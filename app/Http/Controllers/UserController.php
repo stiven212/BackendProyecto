@@ -22,9 +22,13 @@ use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 
 class UserController extends Controller
 {
+    private static $messages = [
+        'email.unique' => 'Correo ya existente',
+
+    ];
     public function authenticate(Request $request)
     {
-        $credentials = $request->only('email');
+        $credentials = $request->only('email', 'password');
         $users = User::all();
         $user = null;
         foreach ($users as $u) {
@@ -34,8 +38,8 @@ class UserController extends Controller
         }
 
         try {
-            if (!$token = JWTAuth::fromUser($user)) {
-                return response()->json(['error' => 'invalid_credentials'], 400);
+            if (!$token = JWTAuth::attempt($credentials)) {
+                return response()->json(['error' => 'credenciales invalidas'], 400);
             }
         } catch (JWTException $e) {
             return response()->json(['error' => 'could_not_create_token'], 500);
@@ -57,14 +61,21 @@ class UserController extends Controller
     }
     public function register(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+//        $validator = Validator::make($request->all(), [
+//            'name' => 'required|string|max:255',
+//            'email' => 'required|string|email|max:255|unique:users',
+//            'password' => 'required|string|min:6|confirmed',
+//        ], self::$messages);
+//        if($validator->fails()){
+//            return response()->json($validator->errors()->toJson(), 400);
+//        }
+        $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
-        ]);
-        if($validator->fails()){
-            return response()->json($validator->errors()->toJson(), 400);
-        }
+        ],self::$messages);
+
+
         $user = User::create([
             'name' => $request->get('name'),
             'email' => $request->get('email'),
@@ -94,14 +105,14 @@ class UserController extends Controller
       //  $car->user_id = Auth::id();
 
 
-        return response()->json($car,203);
+        return response()->json($car,201);
 
     }
 
     public function createWish(){
         $wish = WishList::create();
 
-        return response()->json($wish, 203);
+        return response()->json($wish, 201);
     }
 
     public function showCar(){

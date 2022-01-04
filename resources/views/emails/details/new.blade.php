@@ -4,6 +4,5 @@
 <h3>{{$buyDetail->details}}</h3>
 <h2>Costo total</h2>
 <p>{{$buyDetail->total}}</p>
-<img src="{{$message->embed()}}">
 </body>
 </html>

@@ -17,7 +17,7 @@ class DetailsController extends Controller
     public function index(OrderBuy $orderBuy)
     {
         $this->authorize('viewAny', $orderBuy);
-        return response()->json(new DetailCollection($orderBuy->details));
+        return response()->json(new DetailCollection($orderBuy->details),200);
 
     }
     public function show(BuyDetail $buyDetail)
@@ -32,7 +32,7 @@ class DetailsController extends Controller
     {
         //$detailBuy = BuyDetail::create($request->all());
         $detailBuy = $orderBuy->details()->save(new BuyDetail($request->all()));
-        Mail::to($orderBuy->user)->send(new NewOrder($detailBuy));
+      //  Mail::to($orderBuy->user)->send(new NewOrder($detailBuy));
         return  response()->json(new DetailResource($detailBuy),201);
     }
     public function update(Request $request, BuyDetail $detailsBuy)

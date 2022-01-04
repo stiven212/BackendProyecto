@@ -37,11 +37,11 @@ class ProductController extends Controller
     {
 
         $products = DB::table('products')->orderBy('id','desc')->get();
-        return $products;
+        return response()->json(new ProductCollection($products), 200);
     }
     public function show(Product $product)
     {
-        return $product;
+        return response()->json(new ProductResource($product),200);
     }
 
     public function image(Product $product){
@@ -50,14 +50,14 @@ class ProductController extends Controller
     public function showByCar(Car $car){
         $this->authorize('showByCar', $car);
 
-        return new ProductCollection($car->products);
+        return response()->json(new ProductCollection($car->products),200);
     }
 
     public function showByWish(WishList $wishList){
 
         $this->authorize('showByWish',$wishList);
 
-        return new ProductCollection($wishList->products);
+        return response()->json(new ProductCollection($wishList->products),200);
     }
     public function store (Request $request)
     {
@@ -128,9 +128,9 @@ class ProductController extends Controller
 
         if($car->products()->where('product_id', $id)->exists()){
             $car->products()->detach($id);
-            return response()->json(new ProductResource(Product::find($id)),200);
+            return response()->json(new ProductResource(Product::find($id)),204);
         }
-        return response()->json('Producto no existente',200);
+        return response()->json('Producto no existente',202);
     }
 
 
@@ -145,12 +145,12 @@ class ProductController extends Controller
 //            if($p->id === $id){
         if($wishList->products()->where('product_id', $id)->exists()){
             $wishList->products()->detach($id);
-            return response()->json(new ProductResource(Product::find($id)),200);
+            return response()->json(new ProductResource(Product::find($id)),204);
         }
 //            }
 //        }
 
-        return response()->json('Producto no existente', 205);
+        return response()->json('Producto no existente', 202);
 
     }
 
@@ -159,10 +159,10 @@ class ProductController extends Controller
         $this->authorize('clearCar', $car);
         if($car->products()->exists()){
             $car->products()->detach();
-            return response()->json('Productos eliminados del carrito',200);
+            return response()->json('Productos eliminados del carrito',202);
         }
 
-        return response()->json('No se encuentran productos en el carrito', 200);
+        return response()->json('No se encuentran productos en el carrito', 202);
     }
 
     public function storeByDetail( BuyDetail $buyDetail, Car $car)
