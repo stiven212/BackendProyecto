@@ -158,8 +158,8 @@ class UserController extends Controller
     public function getAuthenticatedUser()
     {
         try {
-            if (! $user = JWTAuth::parseToken()->authenticate()) {
-                return response()->json(['user_not_found'], 404);
+            if (!$user = JWTAuth::parseToken()->authenticate()) {
+                return response()->json(['message'=>'user_not_found'], 404);
             }
         } catch (TokenExpiredException $e) {
             return response()->json(['token_expired'], $e->getStatusCode());
@@ -175,7 +175,18 @@ class UserController extends Controller
 
         $user = JWTAuth::parseToken()->authenticate();
 
-        $user->update($request->all());
+//        $request.password_hash($request->getPassword(),121);
+        $request->validate([
+            'name' => 'string|max:255',
+            'email' => 'string|email|max:255|unique:users,email,'.$user->id,
+            'password' => 'string|min:6|confirmed',
+        ],self::$messages);
+        $user->update(['name' => $request->get('name'),
+            'email' => $request->get('email'),
+            'password' => Hash::make($request->get('password')),]);
+
+//        $user->update($request->all());
+        //            'password' => Hash::make($request->get('password')),
 
         return response()->json(new UserResource($user),200);
 
