@@ -36,7 +36,7 @@ class ProductController extends Controller
     public function index()
     {
 
-        $products = DB::table('products')->orderBy('id','desc')->get();
+        $products = DB::table('products')->orderBy('id','desc')->paginate(16);
         return response()->json(new ProductCollection($products), 200);
     }
     public function show(Product $product)
@@ -58,6 +58,27 @@ class ProductController extends Controller
         $this->authorize('showByWish',$wishList);
 
         return response()->json(new ProductCollection($wishList->products),200);
+    }
+
+    public function confirmProduct(WishList $wishList, Product $product){
+
+//        $product = $wishList->products()->where('id', $product->id)->firstOrFail();
+//        //firstOrFail();
+//
+//        //findOrFail($product->id);
+//
+//        return response()->json(new \Illuminate\Http\Resources\Json\JsonResource($product),200);
+
+        if($wishList->products()->where('id', $product->id)->firstOrFail()){
+            $product = $wishList->products()->where('id', $product->id)->firstOrFail();
+            return response()->json(new \Illuminate\Http\Resources\Json\JsonResource($product),200);
+
+        }else{
+            return response()->json('Articulo no encontrado',201);
+        }
+
+
+
     }
     public function store (Request $request)
     {
@@ -112,6 +133,8 @@ class ProductController extends Controller
     public function storeByWish(WishList $wishList, $id)
     {
         $this->authorize('storeByWish',$wishList);
+
+
 
         if(!$wishList->products()->where('product_id', $id)->exists()){
             $wishList->products()->save(Product::find($id));
@@ -214,5 +237,13 @@ class ProductController extends Controller
         $product->delete();
 
         return response()->json(null,204);
+    }
+
+
+    public function searchProduct($value){
+        $searchProduct = DB::table('products')->where('name', 'like', '%'.$value.'%')->orWhere('description','like','%'.$value.'%')->orWhere('color', 'like', '%'.$value.'%')->get();
+
+        return response()->json(new ProductCollection($searchProduct),200);
+
     }
 }

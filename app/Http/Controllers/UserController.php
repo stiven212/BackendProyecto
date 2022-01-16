@@ -137,7 +137,7 @@ class UserController extends Controller
 
         $wish = WishList::all()->where('user_id',$id);
 
-        return response()->json($wish, 208);
+        return response()->json($wish, 200);
     }
 
     public function showOrders(){

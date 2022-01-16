@@ -59,6 +59,9 @@ Route::get('categories/{category}/products', [\App\Http\Controllers\CategoryCont
 Route::get('categories/{category}/products/{product}', [\App\Http\Controllers\CategoryController::class, 'showProduct']);
 
 
+// Search
+
+Route::get('/search/{value}', [\App\Http\Controllers\ProductController::class, 'searchProduct']);
 
 
 
@@ -112,6 +115,9 @@ Route::group(['middleware' => ['jwt.verify']], function() {
 
     Route::get('orders/{orderBuy}/details/{buyDetail}', [\App\Http\Controllers\OrderController::class, 'showDetail']);
 
+    Route::delete('orders/{orderBuy}', [\App\Http\Controllers\OrderController::class, 'delete']);
+
+    Route::put('orders/{orderBuy}', [\App\Http\Controllers\OrderController::class, 'update']);
 
 
     // Details
@@ -140,6 +146,8 @@ Route::group(['middleware' => ['jwt.verify']], function() {
 
     Route::get('wishes/{wishList}/products', [\App\Http\Controllers\ProductController::class, 'showByWish']);
 
+    Route::get('wishes/{wishList}/products/{product}', [\App\Http\Controllers\ProductController::class, 'confirmProduct']);
+
     Route::post('wishes/{wishList}/products/{id}', [\App\Http\Controllers\ProductController::class, 'storeByWish']);
 
     Route::delete('wishes/{wishList}/products/{id}', [\App\Http\Controllers\ProductController::class, 'deleteByWish']);
@@ -153,6 +161,10 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::put('comments/{comment}', [\App\Http\Controllers\CommentController::class, 'update']);
 
     Route::delete('comments/{comment}', [\App\Http\Controllers\CommentController::class, 'delete']);
+
+
+
+
 
 
 });

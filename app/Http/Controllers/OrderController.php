@@ -48,6 +48,6 @@ class OrderController extends Controller
     public function delete(OrderBuy $orderBuy)
     {
         $orderBuy->delete();
-        return response()->json(null,204);
+        return response()->json('Orden eliminado con exito',204);
     }
 }
