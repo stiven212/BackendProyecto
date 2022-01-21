@@ -131,8 +131,9 @@ Route::group(['middleware' => ['jwt.verify']], function() {
 
     Route::post('details/{buyDetail}/cars/{car}', [\App\Http\Controllers\ProductController::class, 'storeByDetail']);
 
+    Route::post('details/{buyDetail}/products/{product}', [\App\Http\Controllers\ProductController::class, 'storeProductDetail']);
 
-
+    Route::put('details/{buyDetail}', [\App\Http\Controllers\DetailsController::class, 'update']);
 
 
 

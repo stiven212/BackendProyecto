@@ -35,10 +35,10 @@ class DetailsController extends Controller
       //  Mail::to($orderBuy->user)->send(new NewOrder($detailBuy));
         return  response()->json(new DetailResource($detailBuy),201);
     }
-    public function update(Request $request, BuyDetail $detailsBuy)
+    public function update(Request $request, BuyDetail $buyDetail)
     {
-        $detailsBuy->update($request->all());
-        return response()->json($detailsBuy,200);
+        $buyDetail->update($request->all());
+        return response()->json(new DetailResource($buyDetail),200);
     }
 
     public function delete(BuyDetail $detailsBuy)

@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\DB;
 
 class Product extends JsonResource
 {
@@ -29,6 +30,8 @@ class Product extends JsonResource
             'created_at' => $this->created_at,
             'updated_at' => $this-> updated_at,
             'category' => "/api/categories/". $this->category_id,
+            'category_name' => DB::table('categories')->where('id','=',$this->category_id)->get('name'),
+//            'category_name' => $this->category,
             'product' => "/api/categories/". $this->category_id .'/products/'. $this->id,
 
         ];    }

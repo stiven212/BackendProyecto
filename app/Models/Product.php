@@ -17,7 +17,7 @@ class Product extends Model
         return $this->belongsToMany('App\Models\WishList')->withTimestamps();
     }
 
-    public function category(){
+    public function Category(){
         return $this->belongsTo('App\Models\Category');
     }
 

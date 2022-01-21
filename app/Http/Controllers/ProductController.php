@@ -216,6 +216,12 @@ class ProductController extends Controller
 
         //return response()->json('El producto ya se encuentra facturado',200);
     }
+
+    public function storeProductDetail(BuyDetail $buyDetail, Product $product){
+
+        $buyDetail->products()->save($product);
+        return response()->json(new ProductResource($product), 200);
+    }
     public function update(Request $request, Product $product)
     {
         $request->validate([

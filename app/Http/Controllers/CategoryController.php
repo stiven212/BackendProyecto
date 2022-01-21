@@ -62,7 +62,7 @@ class CategoryController extends Controller
 
         $request->validate([
             'name' => 'required|string|unique:categories,name,'.$category->id.'|max:255',
-            'description' => 'required',
+           // 'description' => 'required',
         ], [
             'unique' => 'El :attribute ya existe',
         ]);
