@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 use App\Http\Resources\OrderCollection;
+use App\Http\Resources\WishListCollection;
 use App\Models\Car;
 use App\Models\OrderBuy;
 use App\Models\Product;
@@ -10,15 +11,18 @@ use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use JWTAuth;
 use App\Http\Resources\User as UserResource;
+use App\Http\Resources\WishList as WishResource;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
+
 
 class UserController extends Controller
 {
@@ -112,7 +116,7 @@ class UserController extends Controller
     public function createWish(){
         $wish = WishList::create();
 
-        return response()->json($wish, 201);
+        return response()->json(new WishResource($wish), 201);
     }
 
     public function showCar(){
@@ -135,9 +139,8 @@ class UserController extends Controller
     public function showWish(){
         $id = Auth::id();
 
-        $wish = WishList::all()->where('user_id',$id);
-
-        return response()->json($wish, 200);
+        $wish = DB::table('wish_lists')->where('user_id','=', $id)->get();
+        return response()->json( new WishListCollection($wish), 200);
     }
 
     public function showOrders(){
