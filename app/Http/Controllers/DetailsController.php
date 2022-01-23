@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\BuyDetail;
 use App\Http\Resources\Detail as DetailResource;
 use App\Http\Resources\DetailCollection;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 
 
@@ -19,6 +20,14 @@ class DetailsController extends Controller
         $this->authorize('viewAny', $orderBuy);
         return response()->json(new DetailCollection($orderBuy->details),200);
 
+    }
+
+    public function all()
+    {
+
+        $details = DB::table('buy_details')->orderBy('id', 'desc')->paginate(5);
+
+        return response()->json($details,200);
     }
     public function show(BuyDetail $buyDetail)
     {

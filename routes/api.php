@@ -122,6 +122,7 @@ Route::group(['middleware' => ['jwt.verify']], function() {
 
     // Details
 
+    Route::get('details', [\App\Http\Controllers\DetailsController::class, 'all']);
 
     Route::post('orders/{orderBuy}/details',[\App\Http\Controllers\DetailsController::class, 'store']);
 
