@@ -11,7 +11,7 @@ class BuyDetail extends Model
 
     protected $fillable= ['details', 'iva', 'subtotal', 'quantity', 'received',  'total'];
 
-    public function order(){
+    public function orderBuy(){
         return $this->belongsTo('App\Models\OrderBuy');
     }
 

@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\DB;
 
 class Detail extends JsonResource
 {
@@ -24,6 +25,7 @@ class Detail extends JsonResource
             'created_at' => $this->created_at,
             'updated_at' => $this-> updated_at,
             'order_buy_id' => $this->order_buy_id,
+            'address' => $this->orderBuy->address,
             'product' => $this->products,
             'received' => $this->received
 

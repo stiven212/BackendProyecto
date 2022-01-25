@@ -33,16 +33,16 @@ class ProductsTableSeeder extends Seeder
 
             Product::create([
                 'name' => 't-shirt size '.$faker->randomLetter,
-                'description' => $faker->company,
+                'description' => $faker->paragraph,
                 'color' => $faker->colorName,
                 'price' => $faker->numberBetween(10,100),
                 'sale' => $faker->numberBetween(30,200),
 
-                'image1' => $faker->imageUrl(400,300,null,false),
-                'image2' => $faker->imageUrl(400,300,null,false),
-                'image3' => $faker->imageUrl(400,300,null,false),
-                'image4' => $faker->imageUrl(400,300,null,false),
-                'image5' => $faker->imageUrl(400,300,null,false),
+                'image1' => $faker->imageUrl(400,500, 'shop',false),
+                'image2' => $faker->imageUrl(400,500,'fashion',false),
+                'image3' => $faker->imageUrl(400,500,'shirt',false),
+                'image4' => $faker->imageUrl(400,500,'short',false),
+                'image5' => $faker->imageUrl(400,500,'clothes',false),
 
                 'category_id' => $category->id,
 

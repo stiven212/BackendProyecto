@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 use App\Http\Resources\OrderCollection;
+use App\Http\Resources\WishListCollection;
 use App\Models\Car;
 use App\Models\OrderBuy;
 use App\Models\Product;
@@ -10,21 +11,28 @@ use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use JWTAuth;
 use App\Http\Resources\User as UserResource;
+use App\Http\Resources\WishList as WishResource;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 
+
 class UserController extends Controller
 {
+    private static $messages = [
+        'email.unique' => 'Correo ya existente',
+
+    ];
     public function authenticate(Request $request)
     {
-        $credentials = $request->only('email');
+        $credentials = $request->only('email', 'password');
         $users = User::all();
         $user = null;
         foreach ($users as $u) {
@@ -34,8 +42,8 @@ class UserController extends Controller
         }
 
         try {
-            if (!$token = JWTAuth::fromUser($user)) {
-                return response()->json(['error' => 'invalid_credentials'], 400);
+            if (!$token = JWTAuth::attempt($credentials)) {
+                return response()->json(['error' => 'credenciales invalidas'], 400);
             }
         } catch (JWTException $e) {
             return response()->json(['error' => 'could_not_create_token'], 500);
@@ -57,14 +65,21 @@ class UserController extends Controller
     }
     public function register(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+//        $validator = Validator::make($request->all(), [
+//            'name' => 'required|string|max:255',
+//            'email' => 'required|string|email|max:255|unique:users',
+//            'password' => 'required|string|min:6|confirmed',
+//        ], self::$messages);
+//        if($validator->fails()){
+//            return response()->json($validator->errors()->toJson(), 400);
+//        }
+        $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
-        ]);
-        if($validator->fails()){
-            return response()->json($validator->errors()->toJson(), 400);
-        }
+        ],self::$messages);
+
+
         $user = User::create([
             'name' => $request->get('name'),
             'email' => $request->get('email'),
@@ -94,14 +109,14 @@ class UserController extends Controller
       //  $car->user_id = Auth::id();
 
 
-        return response()->json($car,203);
+        return response()->json($car,201);
 
     }
 
     public function createWish(){
         $wish = WishList::create();
 
-        return response()->json($wish, 203);
+        return response()->json(new WishResource($wish), 201);
     }
 
     public function showCar(){
@@ -124,9 +139,8 @@ class UserController extends Controller
     public function showWish(){
         $id = Auth::id();
 
-        $wish = WishList::all()->where('user_id',$id);
-
-        return response()->json($wish, 208);
+        $wish = DB::table('wish_lists')->where('user_id','=', $id)->get();
+        return response()->json( new WishListCollection($wish), 200);
     }
 
     public function showOrders(){
@@ -147,8 +161,8 @@ class UserController extends Controller
     public function getAuthenticatedUser()
     {
         try {
-            if (! $user = JWTAuth::parseToken()->authenticate()) {
-                return response()->json(['user_not_found'], 404);
+            if (!$user = JWTAuth::parseToken()->authenticate()) {
+                return response()->json(['message'=>'user_not_found'], 404);
             }
         } catch (TokenExpiredException $e) {
             return response()->json(['token_expired'], $e->getStatusCode());
@@ -164,7 +178,18 @@ class UserController extends Controller
 
         $user = JWTAuth::parseToken()->authenticate();
 
-        $user->update($request->all());
+//        $request.password_hash($request->getPassword(),121);
+        $request->validate([
+            'name' => 'string|max:255',
+            'email' => 'string|email|max:255|unique:users,email,'.$user->id,
+            'password' => 'string|min:6|confirmed',
+        ],self::$messages);
+        $user->update(['name' => $request->get('name'),
+            'email' => $request->get('email'),
+            'password' => Hash::make($request->get('password')),]);
+
+//        $user->update($request->all());
+        //            'password' => Hash::make($request->get('password')),
 
         return response()->json(new UserResource($user),200);
 

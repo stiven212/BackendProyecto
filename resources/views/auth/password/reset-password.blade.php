@@ -52,7 +52,7 @@
                             <input type="password" class="form-control" id="password_confirmation" name="password_confirmation">
                         </div>
 
-                        <div class="mb-3">
+                        <div class="mb-3" style="display: none">
                             <label for="token" class="form-label"></label>
                             <input class="form-control" id="token" name="token" value="{{$token}}">
                         </div>

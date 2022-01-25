@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class User extends JsonResource
+class WishList extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -12,25 +12,13 @@ class User extends JsonResource
      * @param  \Illuminate\Http\Request  $request
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
-
-    protected $token;
-
-    public function __construct($resource, $token = null)
-    {
-        parent::__construct($resource);
-        $this->token = $token;
-    }
     public function toArray($request)
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
-            'email' => $this->email,
+            'user_id' => $this->user_id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'token'=>$this->when($this->token,$this->token),
-            'role' => $this->role,
-
         ];
     }
 }

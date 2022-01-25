@@ -27,7 +27,7 @@ class DetailsTableSeeder extends Seeder
             foreach ($orders as $order){
 
             $detail = BuyDetail::create([
-                'details' => $faker->sentence(7),
+                'details' => $faker->sentence(1),
                 'subtotal' => $faker->randomFloat(3,0,8),
                 'iva' => $faker->randomFloat(3,0,1),
                 'total' => $faker->randomFloat(3,10,90),

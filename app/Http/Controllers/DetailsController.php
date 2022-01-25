@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\BuyDetail;
 use App\Http\Resources\Detail as DetailResource;
 use App\Http\Resources\DetailCollection;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 
 
@@ -17,8 +18,16 @@ class DetailsController extends Controller
     public function index(OrderBuy $orderBuy)
     {
         $this->authorize('viewAny', $orderBuy);
-        return response()->json(new DetailCollection($orderBuy->details));
+        return response()->json(new DetailCollection($orderBuy->details),200);
 
+    }
+
+    public function all()
+    {
+
+        $details = DB::table('buy_details')->orderBy('id', 'desc')->paginate(5);
+
+        return response()->json($details,200);
     }
     public function show(BuyDetail $buyDetail)
     {
@@ -32,13 +41,13 @@ class DetailsController extends Controller
     {
         //$detailBuy = BuyDetail::create($request->all());
         $detailBuy = $orderBuy->details()->save(new BuyDetail($request->all()));
-        Mail::to($orderBuy->user)->send(new NewOrder($detailBuy));
+      //  Mail::to($orderBuy->user)->send(new NewOrder($detailBuy));
         return  response()->json(new DetailResource($detailBuy),201);
     }
-    public function update(Request $request, BuyDetail $detailsBuy)
+    public function update(Request $request, BuyDetail $buyDetail)
     {
-        $detailsBuy->update($request->all());
-        return response()->json($detailsBuy,200);
+        $buyDetail->update($request->all());
+        return response()->json(new DetailResource($buyDetail),200);
     }
 
     public function delete(BuyDetail $detailsBuy)

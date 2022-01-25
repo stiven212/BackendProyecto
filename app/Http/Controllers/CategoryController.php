@@ -8,6 +8,7 @@ use App\Http\Resources\Category as CategoryResource;
 use App\Models\Product;
 use App\Http\Resources\Product as ProductResource;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class CategoryController extends Controller
@@ -16,7 +17,7 @@ class CategoryController extends Controller
 
     public function index()
     {
-        return Category::all();
+        return response()->json(Category::all(),200);
     }
     public function show(Category $category)
     {
@@ -26,7 +27,10 @@ class CategoryController extends Controller
     public function showProducts(Category $category)
     {
 
-        return response()->json(new ProductCollection($category->products), 200);
+        $products = DB::table('products')->where('category_id', '=', $category->id)->paginate(12);
+        return response()->json(new ProductCollection($products),200);
+
+            //response()->json(new ProductCollection($category->products), 200);
 
     }
 
@@ -58,7 +62,7 @@ class CategoryController extends Controller
 
         $request->validate([
             'name' => 'required|string|unique:categories,name,'.$category->id.'|max:255',
-            'description' => 'required',
+           // 'description' => 'required',
         ], [
             'unique' => 'El :attribute ya existe',
         ]);
