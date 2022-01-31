@@ -7,7 +7,7 @@ Tambien se requiere tener Git y Node JS.
 
 #### Pasos
 
-1. Ejecutar el siguiente comando dentro de una https://github.com/stiven212/BackendProyecto.git
+1. Ejecutar el siguiente comando dentro de una Git Bash git clone https://github.com/stiven212/BackendProyecto.git
 2. Acceder a la aplicación con el comando cd BackendProyecto.
 3. Ejecutar el siguiente comando una vez se encuentre dentro del directorio npm i
 4. Abrir el proyecto con un editor (se recomienda PHPStorm)
